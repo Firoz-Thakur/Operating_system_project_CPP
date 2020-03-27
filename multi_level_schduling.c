@@ -113,3 +113,42 @@ int main()
       } 
       return 0; 
 }
+
+
+
+/* output :
+
+Enter Total Number of Processes:
+5
+Enter total Details of Process[1]
+
+Arrival Time:	0   Burst Time:	5
+
+Enter total Details of Process[2]
+
+Arrival Time:  4    Burst Time: 2
+
+Enter total Details of Process[3]
+
+Arrival Time:  1    Burst Time: 4
+
+Enter total Details of Process[4]
+
+Arrival Time:  3    Burst Time:	5
+
+Enter total Details of Process[5]
+
+Arrival Time:  3    Burst Time:     6
+
+Enter the Time Quantum:  10
+
+Process ID	  Burst Time	  Turnaround Time   Waiting Time    Priority
+
+Process[1]		 5		 5		 0		1
+Process[2]		 2		 3		 1		3
+Process[3]		 4		 10		 6		5
+Process[4]		 5		 13		 8		7
+Process[5]		 6		 19		 13		9
+
+
+*/
