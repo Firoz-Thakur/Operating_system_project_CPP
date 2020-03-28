@@ -1,154 +1,336 @@
-#include<stdio.h> 
- 
-int main() 
-{ 
-      int i, limit, total = 0, x, counter = 0, time_quantum,j; 
-      
-	  int wait_time = 0, turnaround_time = 0,pos,z,p[10],prio[10], a_time[10], b_time[10], temp[10],b; 
-      
-	  float average_wait_time, average_turnaround_time;
-      
-	  printf("\nEnter Total Number of Processes:"); 
-      
-	  scanf("%d", &limit); 
-      
-	  x = limit; 
-      for(i = 0; i < limit; i++) 
-      {
-	    p[i]=i+1;
-	   
-	    prio[i]=0;
-            printf("\nEnter total Details of Process[%d]\n", i + 1);
-            printf("Arrival Time:\t");
-            scanf("%d", &a_time[i]);
-            printf("Burst Time:\t");
-            scanf("%d", &b_time[i]); 
-            temp[i] = b_time[i];
-      }
-	   
-      printf("\nEnter the Time Quantum:"); 
-      scanf("%d", &time_quantum); 
-      printf("\nProcess ID\t\tBurst Time\t Turnaround Time\t Waiting Time\t Priority\n");
-      for(total = 0, i = 0; x != 0;) 
-      { 
+#include<stdio.h>
+int arrival_time1[30],arrival_time2[30],priority2[30],process2[30],arrival_time3[30];
+int burst_time1[30],burst_time2[30],burst_time3[30];
 
-		    for(z=0;z<limit;z++)
-		    {
-			int temp1;
-			pos=z;
-			for(j=z+1;j<limit;j++)
+int Total=0,t1=0,t2=0,t3=0;
+
+int n,i,at[30],bt[30],pr[30],j=0,k=0,l=0;
+
+int total,x,temp[30],counter=0;
+float avg_waiting_time1=0.0,avg_turnaround_time1=0.0;
+
+int p,waiting_time3[30],turnaround_time3[30];
+float avg_waiting_time3=0.0,avg_turnaround_time3=0.0;
+
+int position,q,temp1,sum=0,waiting_time2[30],turnaround_time2[30];
+float avg_waiting_time2,avg_turnaround_time2;
+
+void round_robin()
+{
+	printf("Time Quantum for Queue1 is 4\n");
+	for(i=0;i<j;i++)
+	{
+		temp[i]=burst_time1[i];
+	} 
+	printf("\nProcess ID\tBurst Time\t Turnaround Time\t Waiting Time\n");
+	x=j;
+    for(i=0,total=0;x!=0;) 
+    { 
+    	if(temp[i]<=4&&temp[i]>0) 
+        {
+			printf("\nProcess[%d] of Queue1 is running for %d units",i+1,temp[i]); 
+            total=total+temp[i]; 
+            temp[i]=0; 
+            counter=1; 
+        } 
+        else if(temp[i]>0) 
+        {
+			printf("\nProcess[%d] of Queue1 is running for 4 units",i+1); 
+            temp[i]=temp[i]-4; 
+            total=total+4; 
+        } 
+        if(temp[i]==0&&counter==1) 
+        { 
+            x--; 
+            printf("\nProcess[%d]\t%d\t%d\t%d",i+1,burst_time1[i],total-arrival_time1[i],total-arrival_time1[i]-burst_time1[i]);
+            avg_waiting_time1=avg_waiting_time1+total-arrival_time1[i]-burst_time1[i]; 
+            avg_turnaround_time1=avg_turnaround_time1+total-arrival_time1[i]; 
+            counter = 0; 
+        } 
+        if(i==j-1) 
+        {
+            i=0; 
+        }
+        else if(arrival_time1[i+1]<=total) 
+        {
+            i++;
+        }
+        else 
+        {
+            i=0;
+        }
+    } 
+    avg_waiting_time1=avg_waiting_time1/j;
+    avg_turnaround_time1=avg_turnaround_time1/j;
+    printf("\nAverage Waiting Time:%f",avg_waiting_time1); 
+    printf("\nAverage Turnaround Time:%f\n",avg_turnaround_time1); 
+}
+
+void priority()
+{
+	for(i=0;i<k;i++)
+    {
+        position=i;
+        for(q=i+1;q<k;q++)
+        {
+            if(priority2[q]<priority2[position])
+            {
+                position=q;
+            }
+        }
+        temp1=priority2[i];
+        priority2[i]=priority2[position];
+        priority2[position]=temp1; 
+        
+        temp1=burst_time2[i];
+        burst_time2[i]=burst_time2[position];
+        burst_time2[position]=temp1;
+        
+        temp1=process2[i];
+        process2[i]=process2[position];
+        process2[position]=temp1;
+    }
+    waiting_time2[0]=0;
+    for(i=1;i<k;i++)
+    {
+        waiting_time2[i]=0;
+        for(q=0;q<i;q++)
+        {
+            waiting_time2[i]=waiting_time2[i]+burst_time2[j];
+        }
+        sum=sum+waiting_time2[i];
+    }
+    avg_waiting_time2=sum/k;
+    sum=0;
+    printf("\nProcess ID\t\tBurst Time\t Waiting Time\t Turnaround Time\n");
+    for(i=0;i<k;i++)
+    {
+    	turnaround_time2[i]=burst_time2[i]+waiting_time2[i];
+        sum=sum+turnaround_time2[i];
+        printf("\nProcess[%d]\t\t%d\t\t %d\t\t %d\n",process2[i],burst_time2[i],waiting_time2[i],turnaround_time2[i]);
+    }
+    avg_turnaround_time2=sum/k;
+    printf("\nAverage Waiting Time:\t%f",avg_waiting_time2);
+    printf("\nAverage Turnaround Time:\t%f\n",avg_turnaround_time2);
+    
+    for(i=0;i<k;i++)
+    {
+    	while(burst_time2[i]!=0)
+    	{
+    		if(burst_time2[i]>10)
+    		{
+				printf("\nProcess[%d] of Queue2 is running for 10 units",i+1);
+				burst_time2[i]=burst_time2[i]-10;
+			}
+			else if(burst_time2[i]<=10)
 			{
-			    if(prio[j]<prio[pos])
-				pos=j;
+				printf("\nProcess[%d] of Queue2 is running for %d units",i+1,burst_time2[i]);
+				burst_time2[i]=0;
 			}
-		 
-		temp1=prio[z];
-	
-		prio[z]=prio[pos];
-	
-		prio[pos]=temp1;
-		 
-			temp1=b_time[z];
-			b_time[z]=b_time[pos];
-			b_time[pos]=temp1;
-		 			temp1=a_time[z];
-				a_time[z]=a_time[pos];
-			a_time[pos]=temp1;
-
-			temp1=p[z];
-				p[z]=p[pos];
-			p[pos]=temp1;
-
-			temp1=temp[z];
-				temp[z]=temp[pos];
-			temp[pos]=temp1;
-		    }
-		{
 		}
-            
-			if(temp[i] <= time_quantum && temp[i] > 0) 
-            { 
-                  total = total + temp[i]; 
-                  temp[i] = 0; 
-                  counter = 1; 
-            } 
-            
-			else if(temp[i] > 0) 
-            { 
-                  temp[i] = temp[i] - time_quantum; 
-                  total = total + time_quantum; 
-            } 
+	}
 
-	for(b=0;b<limit;b++)
-		{
-			if(b==i)
-			prio[b]+=1;
-			else
-			prio[b]+=2;
+}
+
+void fcfs()
+{
+	waiting_time3[0] = 0;   
+    for(i=1;i<l;i++)
+    {
+        waiting_time3[i] = 0;
+        for(p=0;p<l;p++)
+        {
+            waiting_time3[i]=waiting_time3[i]+burst_time3[p];
+        }
+    }
+    printf("\nProcess\t\tBurst Time\tWaiting Time\tTurnaround Time\n");
+    for(i=0;i<l;i++)
+    {
+        turnaround_time3[i]=burst_time3[i]+waiting_time3[i];
+        avg_waiting_time3=avg_waiting_time3+waiting_time3[i];
+        avg_turnaround_time3=avg_turnaround_time3+turnaround_time3[i];
+        printf("\nProcess[%d]\t\t%d\t\t%d\t\t%d\n",i+1,burst_time3[i],waiting_time3[i],turnaround_time3[i]);
+    }
+    avg_waiting_time3=avg_waiting_time3/l;
+    avg_turnaround_time3=avg_turnaround_time3/l;
+    printf("\nAverage Waiting Time=%f",avg_waiting_time3);
+    printf("\nAverage Turnaround Time=%f",avg_turnaround_time3);
+    for(i=0;i<l;i++)
+    {
+    	while(burst_time3[i]!=0)
+    	{
+    		if(burst_time3[i]>10)
+    		{
+				printf("\nProcess[%d] of Queue3 is running for 10 units",i+1);
+				burst_time3[i]=burst_time3[i]-10;
+			}
+			else if(burst_time3[i]<=10)
+			{
+				printf("\nProcess[%d] of Queue2 is running for %d units",i+1,burst_time3[i]);
+				burst_time3[i]=0;
+			}
 		}
+	}
+}
 
-            if(temp[i] == 0 && counter == 1) 
-            { 
-                  x--; 
-                  printf("\nProcess[%d]\t\t%d\t\t %d\t\t %d\t\t%d", p[i], b_time[i], total - a_time[i], total - a_time[i] - b_time[i],prio[i]);
-                  wait_time = wait_time + total - a_time[i] - b_time[i]; 
-                  turnaround_time = turnaround_time + total - a_time[i]; 
-                  counter = 0; 
-            } 
-            if(i == limit - 1) 
-            {
-                  i = 0; 
-            
-			}
-            else if(a_time[i + 1] <= total) 
-            {
-                  i++;
-            
-			}
-            else 
-            {
-                  i = 0;
-            
-			}		
-      } 
-      return 0; 
+void round_robin1()
+{
+	printf("Time Quantum between the 3 queues is 10\n");
+	for(i=1;i<Total;i=i+10)
+	{
+		if(t1>10)
+		{
+			printf("Queue1 is running for 10 units\n");
+			t1=t1-10;
+		}
+		else if(t1<=10&&t1!=0)
+		{
+			printf("Queue1 is running for %d units\n",t1);
+			t1=0;
+		}
+		if(t2>10)
+		{
+			printf("Queue2 is running for 10 units\n");
+			t2=t2-10;
+		}
+		else if(t2<=10&&t2!=0)
+		{
+			printf("Queue2 is running for %d units\n",t2);
+			t2=0;
+		}
+		if(t3>10)
+		{
+			printf("Queue3 is running for 10 units\n");
+			t3=t3-10;
+		}
+		else if(t3<=10&&t3!=0)
+		{
+			printf("Queue3 is running for %d units\n",t3);
+			t3=0;
+		}
+	}
+}
+
+int main()
+{
+	printf("Enter the no. of process you want to enter\n");
+	scanf("%d",&n);
+	for(i=0;i<n;i++)
+	{
+		printf("Enter details of process[%d]\n",i+1);
+		printf("Arrival Time:");
+		scanf("%d",&at[i]);
+		printf("Burst Time:");
+		scanf("%d",&bt[i]);
+		printf("Priority(1 to 15):");
+		scanf("%d",&pr[i]);
+		Total=Total+bt[i];
+	}
+	for(i=0;i<n;i++)
+	{
+		if(pr[i]>=1&&pr[i]<=5)
+		{
+			printf("\n\nProcess[%d] belongs to Queue 1\n",i+1);
+			arrival_time1[j]=at[i];
+			burst_time1[j]=bt[i];
+			j++;
+			t1=t1+bt[i];
+		}
+		
+		else if(pr[i]>=6&&pr[i]<=10)
+		{
+			printf("Process[%d] belongs to Queue 2\n",i+1);
+			arrival_time2[k]=at[i];
+			burst_time2[k]=bt[i];
+			priority2[k]=pr[i];
+			process2[k]=k+1;
+			k++;
+			t2=t2+bt[i];
+		}
+		
+		else if(pr[i]>=11&&pr[i]<=15)
+		{
+			printf("Process[%d] belongs to Queue 3\n\n\n\n",i+1);
+			arrival_time3[l]=at[i];
+			burst_time3[l]=bt[i];
+			l++;
+			t3=t3+bt[i];
+		}
+	}
+	
+	round_robin1();
+	round_robin();
+	fcfs();
+	priority();
+	
+	return 0;
 }
 
 
 
-/* output :
 
-Enter Total Number of Processes:
-5
-Enter total Details of Process[1]
-
-Arrival Time:	0   Burst Time:	5
-
-Enter total Details of Process[2]
-
-Arrival Time:  4    Burst Time: 2
-
-Enter total Details of Process[3]
-
-Arrival Time:  1    Burst Time: 4
-
-Enter total Details of Process[4]
-
-Arrival Time:  3    Burst Time:	5
-
-Enter total Details of Process[5]
-
-Arrival Time:  3    Burst Time:     6
-
-Enter the Time Quantum:  10
-
-Process ID	  Burst Time	  Turnaround Time   Waiting Time    Priority
-
-Process[1]		 5		 5		 0		1
-Process[2]		 2		 3		 1		3
-Process[3]		 4		 10		 6		5
-Process[4]		 5		 13		 8		7
-Process[5]		 6		 19		 13		9
+/*            --------------------- ----------------------------**test case 1**-------------------------------------------------
 
 
-*/
+
+Enter the no. of process you want to enter : 5
+Enter details of process[1]
+Arrival Time: 1  Burst Time: 4  Priority(1 to 15): 5   
+Enter details of process[2]
+Arrival Time: 2  Burst Time: 6  Priority(1 to 15): 7   
+Enter details of process[3]
+Arrival Time: 4  Burst Time: 2  Priority(1 to 15): 8
+Enter details of process[4]
+Arrival Time: 4  Burst Time: 7  Priority(1 to 15): 9
+Enter details of process[5]
+Arrival Time: 4  Burst Time: 6  Priority(1 to 15): 14
+
+Process[1] belongs to Queue 1
+Process[2] belongs to Queue 2
+Process[3] belongs to Queue 2
+Process[4] belongs to Queue 2
+Process[5] belongs to Queue 3
+
+
+
+Time Quantum between the 3 queues is 10
+Queue1 is running for 4 units
+Queue2 is running for 10 units
+Queue3 is running for 6 units
+Queue2 is running for 5 units
+Time Quantum for Queue1 is 4
+
+Process ID	Burst Time	 Turnaround Time	 Waiting Time
+
+Process[1] of Queue1 is running for 4 units
+
+Process[1]	  4	              3	                     0
+Average Waiting Time:   0.000000
+Average Turnaround Time:3.000000
+
+Process		Burst Time	Waiting Time	Turnaround Time
+
+Process[1]	  6		   0		    6
+
+Average Waiting Time=0.000000
+Average Turnaround Time=6.000000
+
+Process[1] of Queue2 is running for 6 units
+Process ID	    Burst Time    Waiting Time	  Turnaround Time
+
+Process[1]		 6		 0		 6
+
+Process[2]		 2		 2		 4
+
+Process[3]		 7		 4		 11
+
+Average Waiting Time:	2.000000
+Average Turnaround Time:	7.000000
+
+Process[1] of Queue2 is running for 6 units
+Process[2] of Queue2 is running for 2 units
+Process[3] of Queue2 is running for 7 units
+
+
+
+         -----------------------------------------------------**test case 2**----------------------------------------------
