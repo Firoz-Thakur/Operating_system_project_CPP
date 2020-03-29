@@ -13,8 +13,9 @@ In the multi level feedback queue scheduling algorithm, the processes are perman
 The multilevel feedback queue scheduling algorithm makes use of both first come first serve algorithm and shortest job first algorithm.
 
 Multilevel Queue Scheduling Program in C Language
-Advantages
+
+1) Advantages:
 A high CPU time job that waits for too long in a lower priority queue can be moved to a higher priority queue at regular intervals of time.
-Disadvantage
+
+2) Disadvantage:
 Moving the processes from one queue to another increases the CPU overhead.
-Note: This multilevel feedback queue scheduling algorithm in C programming is compiled with GNU GCC compiler using Linux terminal on Linux Ubuntu operating system.
