@@ -1,6 +1,6 @@
 #include<stdio.h>
 int arrival_time1[30],arrival_time2[30],priority2[30],process2[30],arrival_time3[30];
-int burst_time1[30],burst_time2[30],burst_time3[30];
+int burst_time1[30],burst_time2[30],burst_time3[31];
 
 int Total=0,t1=0,t2=0,t3=0;
 
