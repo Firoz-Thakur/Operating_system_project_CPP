@@ -8,7 +8,7 @@ void round_robin()
    j(global var): no of process belonging to the round_robin algo. 
    for i to j                                                --------------- O(no of process belonging to the round_robin algo)O(j)
    {
-     statement: assign the value of burst time of each process to temp variable.
+     statement: assign the value of burst time of each process to temp variable
    }
   
   total : global variable(contain the total sum of the burst time
