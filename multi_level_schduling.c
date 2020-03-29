@@ -24,7 +24,7 @@ void round_robin()
 	} 
 	printf("\nProcess ID\tBurst Time\t Turnaround Time\t Waiting Time\n");
 	x=j;
-    for(i=0,total=0;x!=0;) 
+    for(i=0,total=0;x!=0) 
     { 
     	if(temp[i]<=4&&temp[i]>0) 
         {
